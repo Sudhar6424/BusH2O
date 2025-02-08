@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debt App</title>
+  <link rel="stylesheet">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .debt-form {
+    margin-bottom: 30px;
+  }
+  
+  .debt-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .debt-form input {
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .debt-form button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: rgba(255, 255, 255, 0.789);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .debt-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .debt-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .debt-list th, .debt-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .debt-list th {
+    background-color: #f4f4f4;
+  }
+  
+  .debt-list tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .debt-list tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+</style>
+<body>
+
+  <div class="container">
+    <h1>Debt App</h1>
+
+    <!-- Navigation Links -->
+    <nav>
+      <a href="index3.html">Debt Tracker</a> | 
+      <a href="history.html">Debt History</a>
+    </nav>
+
+    <!-- Debt Input Form -->
+    <div class="debt-form">
+      <h2>Add Debt</h2>
+      <form id="debtForm">
+        <label for="debtorName">Debtor Name:</label>
+        <input type="text" id="debtorName" required>
+
+        <label for="debtAmount">Debt Amount:</label>
+        <input type="number" id="debtAmount" required>
+
+        <label for="debtDescription">Debt Description:</label>
+        <input type="text" id="debtDescription" required>
+
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" required>
+
+        <button type="submit">Add Debt</button>
+      </form>
+    </div>
+    
+    <div class="debt-list">
+      <h2>Debt Details</h2>
+      <table id="debtTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>const debtForm = document.getElementById('debtForm');
+    const debtTable = document.getElementById('debtTable').getElementsByTagName('tbody')[0];
+    
+    // Function to add debt data to localStorage
+    const saveDebtData = (debtData) => {
+      const existingDebts = JSON.parse(localStorage.getItem('debts')) || [];
+      existingDebts.push(debtData);
+      localStorage.setItem('debts', JSON.stringify(existingDebts));
+    };
+    
+    // Handle form submission
+    debtForm.addEventListener('submit', function(e) {
+      e.preventDefault();  // Prevent form from submitting and refreshing the page
+    
+      // Get the values from the form inputs
+      const debtorName = document.getElementById('debtorName').value;
+      const debtAmount = document.getElementById('debtAmount').value;
+      const debtDescription = document.getElementById('debtDescription').value;
+      const dueDate = document.getElementById('dueDate').value;
+    
+      // Create a new row for the debt table
+      const newRow = debtTable.insertRow();
+    
+      // Insert cells into the new row
+      const nameCell = newRow.insertCell(0);
+      const amountCell = newRow.insertCell(1);
+      const descriptionCell = newRow.insertCell(2);
+      const dueDateCell = newRow.insertCell(3);
+    
+      // Set the text content of each cell
+      nameCell.textContent = debtorName;
+      amountCell.textContent = `$${debtAmount}`;
+      descriptionCell.textContent = debtDescription;
+      dueDateCell.textContent = dueDate;
+    
+      // Save the debt data to localStorage
+      saveDebtData({ debtorName, debtAmount, debtDescription, dueDate });
+    
+      // Clear the form fields after submission
+      debtForm.reset();
+    });</script>
+</body>
+</html>

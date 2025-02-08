@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debt History</title>
+  <link rel="stylesheet">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .search-bar {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .search-bar input {
+    padding: 10px;
+    width: 80%;
+    font-size: 16px;
+  }
+
+  .debt-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .debt-list th, .debt-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .debt-list th {
+    background-color: #f4f4f4;
+  }
+
+  .debt-list tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .debt-list tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .debt-list td button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  .debt-list td button:hover {
+    background-color: #e53935;
+  }
+  
+</style>
+<body>
+
+  <div class="container">
+    <h1>Debt History</h1>
+
+    <!-- Navigation Links -->
+    <nav>
+      <a href="index3.html">Debt Tracker</a> | 
+      <a href="history.html">Debt History</a>
+    </nav><br>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search debts by name, amount, or description" onkeyup="searchDebts()">
+    </div>
+
+    <div class="debt-list">
+      <h2>Debt History</h2>
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Action</th> <!-- Column for delete button -->
+          </tr>
+        </thead>
+        <tbody>
+          <!-- History rows will go here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Select the history table and search input
+    const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+    const searchInput = document.getElementById('searchInput');
+
+    // Function to load and display debts from localStorage
+    const loadDebtHistory = () => {
+      const existingDebts = JSON.parse(localStorage.getItem('debts')) || [];
+
+      existingDebts.forEach((debt, index) => {
+        const newRow = historyTable.insertRow();
+
+        const nameCell = newRow.insertCell(0);
+        const amountCell = newRow.insertCell(1);
+        const descriptionCell = newRow.insertCell(2);
+        const dueDateCell = newRow.insertCell(3);
+        const actionCell = newRow.insertCell(4); // Cell for the delete button
+
+        nameCell.textContent = debt.debtorName;
+        amountCell.textContent = `$${debt.debtAmount}`;
+        descriptionCell.textContent = debt.debtDescription;
+        dueDateCell.textContent = debt.dueDate;
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteDebt(index);
+        actionCell.appendChild(deleteButton);
+      });
+    };
+    const deleteDebt = (index) => {
+      const existingDebts = JSON.parse(localStorage.getItem('debts')) || [];
+      existingDebts.splice(index, 1);
+      localStorage.setItem('debts', JSON.stringify(existingDebts)); 
+      historyTable.innerHTML = '';
+      loadDebtHistory(); 
+    };
+    const searchDebts = () => {
+      const query = searchInput.value.toLowerCase();
+      const rows = historyTable.getElementsByTagName('tr');
+
+      Array.from(rows).forEach(row => {
+        const cells = row.getElementsByTagName('td');
+        const debtorName = cells[0].textContent.toLowerCase();
+        const amount = cells[1].textContent.toLowerCase();
+        const description = cells[2].textContent.toLowerCase();
+        if (debtorName.includes(query) || amount.includes(query) || description.includes(query)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    };
+    window.onload = loadDebtHistory;
+
+  </script>
+</body>
+</html>
+

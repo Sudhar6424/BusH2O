@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Governance App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 0;
+}
+
+header nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+header nav ul li {
+    margin: 0 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+#hero {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+}
+
+#services, #issues, #notifications {
+    padding: 30px;
+    background-color: #fff;
+    margin: 20px 0;
+}
+
+.service-list, .notification-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.service, .notification {
+    background-color: #f4f4f4;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.service h3, .notification h3 {
+    color: #333;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+
+</style>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#issues">Report Issues</a></li>
+                <li><a href="#notifications">Notifications</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <h1>E-Governance Services</h1>
+        <p>Access government services and report issues quickly and easily.</p>
+    </section>
+
+    <section id="services">
+        <h2>Available Government Services</h2>
+        <div class="service-list">
+            <!-- Services will be added dynamically using JavaScript -->
+        </div>
+    </section>
+
+    <section id="issues">
+        <h2>Report an Issue</h2>
+        <form id="issue-form">
+            <label for="issue-type">Issue Type:</label>
+            <select id="issue-type">
+                <option value="road">Road Repair</option>
+                <option value="water">Water Supply</option>
+                <option value="electricity">Electricity Outage</option>
+                <option value="other">Other</option>
+            </select><br>
+            
+            <label for="issue-description">Description:</label><br>
+            <textarea id="issue-description" required></textarea><br>
+            
+            <button type="submit">Submit Issue</button>
+        </form>
+    </section>
+
+    <section id="notifications">
+        <h2>Government Notifications</h2>
+        <div class="notification-list">
+            <!-- Notifications will be added dynamically -->
+        </div>
+    </section>
+
+    <footer>
+        <p>E-Governance App &copy; 2025</p>
+    </footer>
+
+    <script>
+        // Simulating government services and notifications
+
+const services = [
+    { name: "Apply for Passport", description: "Apply for your passport online, with easy-to-follow steps." },
+    { name: "Birth Certificate Registration", description: "Register a birth certificate for your newborn." },
+    { name: "Voter Registration", description: "Register yourself to vote in the upcoming elections." },
+    { name: "Renew Driver’s License", description: "Renew your driver’s license online." }
+];
+
+const notifications = [
+    { title: "Important Update on Water Supply", message: "Water supply will be interrupted in your area from 10 PM to 6 AM due to maintenance." },
+    { title: "New Job Openings", message: "The government is hiring for multiple positions in healthcare and education." },
+    { title: "Road Maintenance Notice", message: "Road repairs will begin on Main Street starting next Monday." }
+];
+
+// Adding services dynamically to the page
+const serviceList = document.querySelector(".service-list");
+services.forEach(service => {
+    const serviceElement = document.createElement("div");
+    serviceElement.classList.add("service");
+
+    serviceElement.innerHTML = `
+        <h3>${service.name}</h3>
+        <p>${service.description}</p>
+    `;
+
+    serviceList.appendChild(serviceElement);
+});
+
+// Adding notifications dynamically
+const notificationList = document.querySelector(".notification-list");
+notifications.forEach(notification => {
+    const notificationElement = document.createElement("div");
+    notificationElement.classList.add("notification");
+
+    notificationElement.innerHTML = `
+        <h3>${notification.title}</h3>
+        <p>${notification.message}</p>
+    `;
+
+    notificationList.appendChild(notificationElement);
+});
+
+// Handling the issue report form submission
+const issueForm = document.getElementById("issue-form");
+
+issueForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    const issueType = document.getElementById("issue-type").value;
+    const issueDescription = document.getElementById("issue-description").value;
+
+    alert(`Issue Reported: ${issueType}\nDescription: ${issueDescription}`);
+    issueForm.reset(); // Reset form after submission
+});
+
+    </script>
+</body>
+</html>
